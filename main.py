@@ -56,19 +56,24 @@ def crossoffMovie():
 
 @app.route("/add", methods=['POST'])
 def addMovie():
+    # look inside the request to figure out what the user typed
     new_movie = request.form['new-movie']
 
-    # TODO 2
     # if the user typed nothing at all, redirect and tell them the error
+    if (not new_movie) or (new_movie.strip() == ""):
+        error = "Please specify the movie you want to add."
+        return redirect("/?error=" + cgi.escape(error, quote=True))
 
-    # TODO 3
     # if the user wants to add a terrible movie, redirect and tell them the error
+    if new_movie in terrible_movies:
+        error = "Trust me, you don't want to add '{0}' to your Watchlist".format(new_movie)
+        return redirect("/?error=" + cgi.escape(error, quote=True))
 
-    # TODO 1
     # 'escape' the user's input so that if they typed HTML, it doesn't mess up our site
+    new_movie_escaped = cgi.escape(new_movie, quote=True)
 
     # build response content
-    new_movie_element = "<strong>" + new_movie + "</strong>"
+    new_movie_element = "<strong>" + new_movie_escaped + "</strong>"
     sentence = new_movie_element + " has been added to your Watchlist!"
     content = page_header + "<p>" + sentence + "</p>" + page_footer
 
