@@ -17,6 +17,21 @@ page_footer = """
 </html>
 """
 
+# TODO 1
+# Include another form so the user can "cross off" a movie from their list.
+
+
+# TODO 3 (Extra Credit)
+# modify your form to use a dropdown (<select>) instead a
+# text box (<input type="text"/>)
+
+
+# TODO 2
+# Create a new RequestHandler class called CrossOffMovie, to receive and
+# handle the request from your 'cross-off' form. The user should see a message like:
+# "Star Wars has been crossed off your watchlist".
+
+
 @app.route("/add", methods=['POST'])
 def addMovie():
     new_movie = request.form['new-movie']
