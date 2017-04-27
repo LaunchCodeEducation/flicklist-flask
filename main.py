@@ -38,10 +38,6 @@ def getCurrentWatchlist():
 def crossoffMovie():
     crossed_off_movie = request.form['crossed-off-movie']
 
-    if not crossed_off_movie or crossed_off_movie.strip() == "":
-        error = "Please specify a movie to cross off."
-        self.redirect("/?error=" + error)
- 
     # if user tried to cross off a movie that is not in their list, reject
     if not (crossed_off_movie in getCurrentWatchlist()):
         # the user tried to cross off a movie that isn't in their list,
