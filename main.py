@@ -39,7 +39,7 @@ def crossoffMovie():
     crossed_off_movie = request.form['crossed-off-movie']
 
     # if user tried to cross off a movie that is not in their list, reject
-    if not (crossed_off_movie in getCurrentWatchlist()):
+    if crossed_off_movie not in getCurrentWatchlist():
         # the user tried to cross off a movie that isn't in their list,
         # so we redirect back to the front page and tell them what went wrong
         error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(crossed_off_movie)
@@ -75,12 +75,8 @@ def addMovie():
 
 @app.route("/")
 def index():
-    # XXX refactor this -dm 04-27-2017
     encoded_error = request.args.get("error")
-    if encoded_error:
-        return render_template('edit.html', watchlist=getCurrentWatchlist(), error=cgi.escape(encoded_error, quote=True))
-    else:
-        return render_template('edit.html', watchlist=getCurrentWatchlist())
+    return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 
 app.run()
