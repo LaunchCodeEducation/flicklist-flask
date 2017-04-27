@@ -38,7 +38,7 @@ def getCurrentWatchlist():
 def crossoffMovie():
     crossed_off_movie = request.form['crossed-off-movie']
 
-    if (crossed_off_movie in getCurrentWatchlist()) == False:
+    if crossed_off_movie not in getCurrentWatchlist()
         # the user tried to cross off a movie that isn't in their list,
         # so we redirect back to the front page and tell them what went wrong
         error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(crossed_off_movie)
