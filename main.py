@@ -1,5 +1,4 @@
-from flask import Flask
-import random
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -17,6 +16,17 @@ page_footer = """
     </body>
 </html>
 """
+
+@app.route("/add", methods=['POST'])
+def addMovie():
+    new_movie = request.form['new-movie']
+
+    # build response content
+    new_movie_element = "<strong>" + new_movie + "</strong>"
+    sentence = new_movie_element + " has been added to your Watchlist!"
+    content = page_header + "<p>" + sentence + "</p>" + page_footer
+
+    return content
 
 
 @app.route("/")
@@ -39,9 +49,6 @@ def index():
     content = page_header + edit_header + add_form + page_footer
 
     return content
-
-def getRandomMovie():
-    return random.choice(["The Big Lebowski", "The Royal Tenenbaums", "Princess Mononoke", "The Princess Bride", "Star Trek IV: The Voyage Home"])
 
 
 app.run()
