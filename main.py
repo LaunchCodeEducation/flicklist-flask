@@ -34,7 +34,7 @@ def getCurrentWatchlist():
 
 
 
-@app.route("/crossoff", methods=['POST'])
+@app.route("/cross-off", methods=['POST'])
 def crossoffMovie():
     crossed_off_movie = request.form['crossed-off-movie']
 
@@ -103,7 +103,7 @@ def index():
         crossoff_options += '<option value="{0}">{0}</option>'.format(movie)
 
     crossoff_form = """
-        <form action="/crossoff" method="post">
+        <form action="/cross-off" method="post">
             <label>
                 I want to cross off
                 <select name="crossed-off-movie"/>
