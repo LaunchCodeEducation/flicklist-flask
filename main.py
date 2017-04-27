@@ -7,7 +7,7 @@ page_header = """
 <!DOCTYPE html>
 <html>
     <head>
-        <h1>FlickList</h1>
+        <title>FlickList</title>
     </head>
     <body>
         <h1>FlickList</h1>
@@ -21,22 +21,22 @@ page_footer = """
 
 @app.route("/")
 def index():
-    # choose a movie by invoking our new function
-    todays_movie = getRandomMovie()
-    tomorrows_movie = getRandomMovie()
+    edit_header = "<h2>Edit My Watchlist</h2>"
+
+    # a form for adding new movies
+    add_form = """
+        <form action="/add" method="post">
+            <label>
+                I want to add
+                <input type="text" name="new-movie"/>
+                to my watchlist.
+            </label>
+            <input type="submit" value="Add It"/>
+        </form>
+    """
 
     # build the response string
-    content = page_header
-    content += "<h1>Movie of the Day</h1>"
-    content += "<ul>"
-    content += "<li>" + todays_movie + "</li>"
-    content += "</ul>"
-
-    content += "<h1>Tomorrow's Movie of the Day</h1>"
-    content += "<ul>"
-    content += "<li>" + tomorrows_movie + "</li>"
-    content += "</ul>"
-    content += page_footer
+    content = page_header + edit_header + add_form + page_footer
 
     return content
 
