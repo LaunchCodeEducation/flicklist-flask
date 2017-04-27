@@ -58,6 +58,15 @@ def crossoffMovie():
 def addMovie():
     new_movie = request.form['new-movie']
 
+    # TODO 2
+    # if the user typed nothing at all, redirect and tell them the error
+
+    # TODO 3
+    # if the user wants to add a terrible movie, redirect and tell them the error
+
+    # TODO 1
+    # 'escape' the user's input so that if they typed HTML, it doesn't mess up our site
+
     # build response content
     new_movie_element = "<strong>" + new_movie + "</strong>"
     sentence = new_movie_element + " has been added to your Watchlist!"
