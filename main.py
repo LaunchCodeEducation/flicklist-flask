@@ -3,6 +3,21 @@ import random
 
 app = Flask(__name__)
 
+page_header = """
+<!DOCTYPE html>
+<html>
+    <head>
+        <h1>FlickList</h1>
+    </head>
+    <body>
+        <h1>FlickList</h1>
+"""
+
+page_footer = """
+    </body>
+</html>
+"""
+
 
 @app.route("/")
 def index():
@@ -11,7 +26,8 @@ def index():
     tomorrows_movie = getRandomMovie()
 
     # build the response string
-    content = "<h1>Movie of the Day</h1>"
+    content = page_header
+    content += "<h1>Movie of the Day</h1>"
     content += "<ul>"
     content += "<li>" + todays_movie + "</li>"
     content += "</ul>"
@@ -20,6 +36,7 @@ def index():
     content += "<ul>"
     content += "<li>" + tomorrows_movie + "</li>"
     content += "</ul>"
+    content += page_footer
 
     return content
 
