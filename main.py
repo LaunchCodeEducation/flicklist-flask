@@ -17,19 +17,44 @@ page_footer = """
 </html>
 """
 
-# TODO 1
-# Include another form so the user can "cross off" a movie from their list.
+# a form for adding new movies
+add_form = """
+    <form action="/add" method="post">
+        <label>
+            I want to add
+            <input type="text" name="new-movie"/>
+            to my watchlist.
+        </label>
+        <input type="submit" value="Add It"/>
+    </form>
+"""
+
+# a form for crossing off watched movies
+crossoff_form = """
+    <form action="/crossoff" method="post">
+        <label>
+            I want to cross off
+            <select name="crossed-off-movie"/>
+                <option value="Star Wars">Star Wars</option>
+                <option value="My Favorite Martian">My Favorite Martian</option>
+                <option value="The Avengers">The Avengers</option>
+                <option value="The Hitchhiker's Guide To The Galaxy">The Hitchhiker's Guide To The Galaxy</option>
+            </select>
+            from my watchlist.
+        </label>
+        <input type="submit" value="Cross It Off"/>
+    </form>
+"""
 
 
-# TODO 3 (Extra Credit)
-# modify your form to use a dropdown (<select>) instead a
-# text box (<input type="text"/>)
+@app.route("/crossoff", methods=['POST'])
+def crossoffMovie():
+    crossed_off_movie = request.form['crossed-off-movie']
+    crossed_off_movie_element = "<strike>" + crossed_off_movie + "</strike>"
+    confirmation = crossed_off_movie_element + " has been crossed off your Watchlist."
+    content = page_header + "<p>" + confirmation + "</p>" + page_footer
 
-
-# TODO 2
-# Create a new RequestHandler class called CrossOffMovie, to receive and
-# handle the request from your 'cross-off' form. The user should see a message like:
-# "Star Wars has been crossed off your watchlist".
+    return content
 
 
 @app.route("/add", methods=['POST'])
@@ -48,20 +73,8 @@ def addMovie():
 def index():
     edit_header = "<h2>Edit My Watchlist</h2>"
 
-    # a form for adding new movies
-    add_form = """
-        <form action="/add" method="post">
-            <label>
-                I want to add
-                <input type="text" name="new-movie"/>
-                to my watchlist.
-            </label>
-            <input type="submit" value="Add It"/>
-        </form>
-    """
-
     # build the response string
-    content = page_header + edit_header + add_form + page_footer
+    content = page_header + edit_header + add_form + crossoff_form + page_footer
 
     return content
 
