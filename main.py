@@ -68,9 +68,7 @@ def addMovie():
     # 'escape' the user's input so that if they typed HTML, it doesn't mess up our site
     new_movie_escaped = cgi.escape(new_movie, quote=True)
 
-    # TODO 1
-    # Use a template to render the confirmation message
-    return "Confirmation Message Under Construction..."
+    return render_template('add-confirmation.html', movie=new_movie)
 
 
 @app.route("/")
