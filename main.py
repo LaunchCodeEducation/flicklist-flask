@@ -31,7 +31,7 @@ add_form = """
 
 # a form for crossing off watched movies
 crossoff_form = """
-    <form action="/crossoff" method="post">
+    <form action="/cross-off" method="post">
         <label>
             I want to cross off
             <select name="crossed-off-movie"/>
@@ -47,7 +47,7 @@ crossoff_form = """
 """
 
 
-@app.route("/crossoff", methods=['POST'])
+@app.route("/cross-off", methods=['POST'])
 def crossoffMovie():
     crossed_off_movie = request.form['crossed-off-movie']
     crossed_off_movie_element = "<strike>" + crossed_off_movie + "</strike>"
