@@ -15,9 +15,7 @@ terrible_movies = [
 def getCurrentWatchlist():
     # For now, we are just pretending
     # returns user's current watchlist
-    return [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
-
-
+    return [] # [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
 
 @app.route("/watched-it", methods=['POST'])
 def watchMovie():
