@@ -57,10 +57,8 @@ def addMovie():
     return "Confirmation Message Under Construction..."
 
 # TODO 2
-# Modify edit.html to take another optional keyword argument: watchlist.
-# Feed it getCurrentWatchlist(). Display those movies in an unordered list with bullets in front of each movie.
+# Modify edit.html to display the watchlist in an unordered list with bullets in front of each movie.
 # Put the list between "Flicklist" and "Edit My Watchlist".
-# Design consideration: make edit.html also work if the watchlist parameter is omitted, None, or the empty list.
 
 @app.route("/")
 def index():
