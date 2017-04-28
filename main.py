@@ -34,21 +34,21 @@ def getCurrentWatchlist():
 
 
 
-@app.route("/cross-off", methods=['POST'])
-def crossoffMovie():
-    crossed_off_movie = request.form['crossed-off-movie']
+@app.route("/watched-it", methods=['POST'])
+def watchMovie():
+    watched_movie = request.form['watched-movie']
 
-    if crossed_off_movie not in getCurrentWatchlist()
+    if watched_movie not in getCurrentWatchlist():
         # the user tried to cross off a movie that isn't in their list,
         # so we redirect back to the front page and tell them what went wrong
-        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(crossed_off_movie)
+        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(watched_movie)
 
         # redirect to homepage, and include error as a query parameter in the URL
         return redirect("/?error=" + error)
 
     # if we didn't redirect by now, then all is well
-    crossed_off_movie_element = "<strike>" + crossed_off_movie + "</strike>"
-    confirmation = crossed_off_movie_element + " has been crossed off your Watchlist."
+    watched_movie_element = "<strike>" + watched_movie + "</strike>"
+    confirmation = watched_movie_element + " has been crossed off your Watchlist."
     content = page_header + "<p>" + confirmation + "</p>" + page_footer
 
     return content
@@ -84,22 +84,22 @@ def index():
 
     # a form for crossing off watched movies
     # (first we build a dropdown from the current watchlist items)
-    crossoff_options = ""
+    watch_options = ""
     for movie in getCurrentWatchlist():
-        crossoff_options += '<option value="{0}">{0}</option>'.format(movie)
+        watch_options += '<option value="{0}">{0}</option>'.format(movie)
 
-    crossoff_form = """
-        <form action="/cross-off" method="post">
+    watch_form = """
+        <form action="/watched-it" method="post">
             <label>
                 I want to cross off
-                <select name="crossed-off-movie"/>
+                <select name="watched-movie"/>
                     {0}
                 </select>
                 from my watchlist.
             </label>
             <input type="submit" value="Cross It Off"/>
         </form>
-    """.format(crossoff_options)
+    """.format(watch_options)
 
     # if we have an error, make a <p> to display it
     error = request.args.get("error")
@@ -110,7 +110,7 @@ def index():
         error_element = ''
 
     # combine all the pieces to build the content of our response
-    main_content = edit_header + add_form + crossoff_form + error_element
+    main_content = edit_header + add_form + watch_form + error_element
 
 
     # build the response string
