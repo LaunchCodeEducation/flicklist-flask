@@ -12,10 +12,10 @@
     <input type="submit" value="Add It"/>
 </form>
 
-<form action="/cross-off" method="post">
+<form action="/watched-it" method="post">
     <label>
         I want to cross off
-        <select name="crossed-off-movie"/>
+        <select name="watched-movie"/>
             <!-- need to loop over watchlist to create option elements -->
             {% for movie in watchlist: %}
                 <option value="{{ movie }}">{{ movie }}</option>
