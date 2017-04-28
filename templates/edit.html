@@ -1,6 +1,14 @@
 {% extends "base.html" %}
-
 {% block content %}
+
+<h3>My Watchlist</h3>
+<ul>
+  {% for movie in watchlist: %}
+  <li>{{ movie }}</li>
+  {% endfor %}
+</ul>
+
+
 <h3>Edit My Watchlist</h3>
 
 <form action="/add" method="post">
