@@ -34,21 +34,20 @@ def getCurrentWatchlist():
 
 
 
-@app.route("/cross-off", methods=['POST'])
-def crossoffMovie():
-    crossed_off_movie = request.form['crossed-off-movie']
+@app.route("/watched-it", methods=['POST'])
+def watchMovie():
+    watched_movie = request.form['watched-movie']
 
-    # if user tried to cross off a movie that is not in their list, reject
-    if crossed_off_movie not in getCurrentWatchlist():
+    if watched_movie not in getCurrentWatchlist():
         # the user tried to cross off a movie that isn't in their list,
         # so we redirect back to the front page and tell them what went wrong
-        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(crossed_off_movie)
+        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(watched_movie)
 
         # redirect to homepage, and include error as a query parameter in the URL
         return redirect("/?error=" + error)
 
     # if we didn't redirect by now, then all is well
-    return render_template('cross-off.html', crossed_off_movie=crossed_off_movie)
+    return render_template('watched-it.html', watched_movie=watched_movie)
 
 @app.route("/add", methods=['POST'])
 def addMovie():
@@ -77,6 +76,5 @@ def addMovie():
 def index():
     encoded_error = request.args.get("error")
     return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
-
 
 app.run()
