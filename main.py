@@ -58,7 +58,13 @@ def addMovie():
 
 # TODO 2
 # Modify edit.html to display the watchlist in an unordered list with bullets in front of each movie.
-# Put the list between "Flicklist" and "Edit My Watchlist".
+# Put the list between "Flicklist" and "Edit My Watchlist" under a <h3>My Watchlist</h3>
+
+# TODO 3
+# Change getCurrentWatchlist to return []. This simulates a user with an empty watchlist.
+# Modify edit.html to make sense in such a situation:
+# 3a) Hide the <h3>My Watchlist</h3> and it's unordered list.
+# 3b) Hide the watched-it form, since there are no movies to watch. 
 
 @app.route("/")
 def index():
