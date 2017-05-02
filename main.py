@@ -22,6 +22,17 @@ def getWatchedMovies():
     # returns the list of movies the user has already watched and crossed off
     return [ "The Matrix", "The Princess Bride", "Buffy the Vampire Slayer" ]
 
+# TODO 1
+# Create a new route called MovieRatings which handles a POST request on /ratings
+
+# TODO 2
+# Then create a confirmation template to be rendered at ratings.html
+# It should show a confirmation message like:
+#    "You gave Lord of the Rings a rating of ****"
+
+# TODO 3
+# Add forms for rating movies, one on each list item in the ratings.html template
+
 
 @app.route("/watched-it", methods=['POST'])
 def watchMovie():
