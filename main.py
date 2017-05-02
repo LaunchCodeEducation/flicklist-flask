@@ -14,8 +14,14 @@ terrible_movies = [
 
 def getCurrentWatchlist():
     # For now, we are just pretending
-    # returns user's current watchlist
+    # returns user's current watchlist -- a list of movies they want to see but haven't yet
     return [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
+
+def getWatchedMovies():
+    # For now, we are just pretending
+    # returns the list of movies the user has already watched and crossed off
+    return [ "The Matrix", "The Princess Bride", "Buffy the Vampire Slayer" ]
+
 
 @app.route("/watched-it", methods=['POST'])
 def watchMovie():
