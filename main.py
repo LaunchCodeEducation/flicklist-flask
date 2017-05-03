@@ -43,7 +43,7 @@ terrible_movies = [
 
 def getCurrentWatchlist():
     # returns user's current watchlist -- a list of movies they want to see but haven't yet
-    return [movie.name for movie in Movie.query.all()]
+    return Movie.query.all()
 
 def getWatchedMovies():
     # For now, we are just pretending
@@ -78,15 +78,11 @@ def MovieRatings():
 
 @app.route("/watched-it", methods=['POST'])
 def watchMovie():
-    watched_movie = request.form['watched-movie']
+    watched_movie_id = request.form['watched-movie']
 
-    if watched_movie not in getCurrentWatchlist():
-        # the user tried to cross off a movie that isn't in their list,
-        # so we redirect back to the front page and tell them what went wrong
-        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(watched_movie)
-
-        # redirect to homepage, and include error as a query parameter in the URL
-        return redirect("/?error=" + error)
+    watched_movie = Movie.query.get(watched_movie_id)
+    if not watched_movie:
+        return redirect("/?error=Attempt to watch a movie unknown to this database")
 
     # if we didn't redirect by now, then all is well
     return render_template('watched-it.html', watched_movie=watched_movie)
@@ -94,23 +90,22 @@ def watchMovie():
 @app.route("/add", methods=['POST'])
 def addMovie():
     # look inside the request to figure out what the user typed
-    new_movie = request.form['new-movie']
+    new_movie_name = request.form['new-movie']
 
     # if the user typed nothing at all, redirect and tell them the error
-    if (not new_movie) or (new_movie.strip() == ""):
+    if (not new_movie_name) or (new_movie_name.strip() == ""):
         error = "Please specify the movie you want to add."
         return redirect("/?error=" + error)
 
     # if the user wants to add a terrible movie, redirect and tell them the error
-    if new_movie in terrible_movies:
-        error = "Trust me, you don't want to add '{0}' to your Watchlist".format(new_movie)
+    if new_movie_name in terrible_movies:
+        error = "Trust me, you don't want to add '{0}' to your Watchlist".format(new_movie_name)
         return redirect("/?error=" + error)
 
-    # 'escape' the user's input so that if they typed HTML, it doesn't mess up our site
-    new_movie_escaped = cgi.escape(new_movie, quote=True)
-
-    return render_template('add-confirmation.html', movie=new_movie)
-
+    movie = Movie(new_movie_name)
+    db.session.add(movie)
+    db.session.commit()
+    return render_template('add-confirmation.html', movie=movie)
 
 @app.route("/")
 def index():

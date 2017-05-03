@@ -7,8 +7,8 @@
     {% for movie in watchlist: %}
       <li>
         <form action="/watched-it" method="post">
-          {{ movie }}
-          <input type="hidden" name="watched-movie" value="{{ movie }}"/>
+          {{ movie.name }}
+          <input type="hidden" name="watched-movie" value="{{ movie.id }}"/>
           <input type="submit" value="I Watched it!"/>
         </form>
       </li>
