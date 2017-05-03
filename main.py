@@ -1,9 +1,36 @@
 from flask import Flask, request, redirect, render_template
+from flask_sqlalchemy import SQLAlchemy
 import cgi
 
 app = Flask(__name__)
-
 app.config['DEBUG'] = True      # displays runtime errors in the browser, too
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://flicklist:MyNewPass@localhost/flicklist'
+
+db = SQLAlchemy(app)
+
+class Movie(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=True)
+    watched = db.Column(db.Boolean)
+
+    def __init__(self, name):
+        self.name = name
+        self.watched = False
+
+    def __repr__(self):
+        return '<Movie %r>' % self.name
+
+# HOWTO initialize the movie table
+# >>> from main import db, Movie
+# /home/dm/miniconda3/envs/flicklist/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py:839: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
+#   'SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and '
+# >>> db.create_all()
+# >>> db.session.add(Movie('Mulan'))
+# >>> db.session.add(Movie('Rushmore'))
+# >>> db.session.add(Movie('Damsels in Distress'))
+# >>> db.session.commit()
+# >>> Movie.query.all()
+# [<Movie 'Mulan'>, <Movie 'Rushmore'>, <Movie 'Damsels in Distress'>]
 
 # a list of movies that nobody should have to watch
 terrible_movies = [
@@ -15,9 +42,8 @@ terrible_movies = [
 ]
 
 def getCurrentWatchlist():
-    # For now, we are just pretending
     # returns user's current watchlist -- a list of movies they want to see but haven't yet
-    return [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
+    return [movie.name for movie in Movie.query.all()]
 
 def getWatchedMovies():
     # For now, we are just pretending
@@ -91,4 +117,5 @@ def index():
     encoded_error = request.args.get("error")
     return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
 
-app.run()
+if __name__ == "__main__":
+    app.run()
