@@ -6,7 +6,7 @@
 <ul>
   {% for movie in movies %}
     <li>
-      <h3>{{ movie }}</h3>
+      <h3>{{ movie.name }}</h3>
       <form action="/rating-confirmation" method="post">
         <label>
           My Rating:
@@ -17,7 +17,7 @@
           </select>
         </label>
         <input type="hidden" name="rating" value="***"/>
-        <input type="hidden" name="movie" value="{{ movie }}"/>
+        <input type="hidden" name="movie_id" value="{{ movie.id }}"/>
         <input type="submit" value="Rate it!"/> 
       </form>
     </li>

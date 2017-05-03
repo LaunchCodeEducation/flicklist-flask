@@ -20,18 +20,6 @@ class Movie(db.Model):
     def __repr__(self):
         return '<Movie %r>' % self.name
 
-# HOWTO initialize the movie table
-# >>> from main import db, Movie
-# /home/dm/miniconda3/envs/flicklist/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py:839: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
-#   'SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and '
-# >>> db.create_all()
-# >>> db.session.add(Movie('Mulan'))
-# >>> db.session.add(Movie('Rushmore'))
-# >>> db.session.add(Movie('Damsels in Distress'))
-# >>> db.session.commit()
-# >>> Movie.query.all()
-# [<Movie 'Mulan'>, <Movie 'Rushmore'>, <Movie 'Damsels in Distress'>]
-
 # a list of movies that nobody should have to watch
 terrible_movies = [
     "Gigli",
@@ -43,23 +31,22 @@ terrible_movies = [
 
 def getCurrentWatchlist():
     # returns user's current watchlist -- a list of movies they want to see but haven't yet
-    return Movie.query.all()
+    return Movie.query.filter_by(watched=False).all()
 
 def getWatchedMovies():
     # For now, we are just pretending
     # returns the list of movies the user has already watched and crossed off
-    return [ "The Matrix", "The Princess Bride", "Buffy the Vampire Slayer" ]
-
+    return Movie.query.filter_by(watched=True).all()
 
 # Create a new route called RateMovie which handles a POST request on /rating-confirmation
 @app.route("/rating-confirmation", methods=['POST'])
 def RateMovie():
-    movie = request.form['movie']
+    movie_id = request.form['movie_id']
     rating = request.form['rating']
-    #movie = "The Matrix"
 
-    if movie not in getWatchedMovies():
-        # the user tried to cross off a movie that isn't in their list,
+    movie = Movie.query.get(movie_id)
+    if not movie:
+        # the user tried to rate a movie that isn't in their list,
         # so we redirect back to the front page and tell them what went wrong
         error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(movie)
 
@@ -85,6 +72,8 @@ def watchMovie():
         return redirect("/?error=Attempt to watch a movie unknown to this database")
 
     # if we didn't redirect by now, then all is well
+    watched_movie.watched = True
+    db.session.commit()
     return render_template('watched-it.html', watched_movie=watched_movie)
 
 @app.route("/add", methods=['POST'])
