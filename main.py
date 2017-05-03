@@ -3,6 +3,8 @@ import cgi
 
 app = Flask(__name__)
 
+app.config['DEBUG'] = True      # displays runtime errors in the browser, too
+
 # a list of movies that nobody should have to watch
 terrible_movies = [
     "Gigli",
