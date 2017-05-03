@@ -22,16 +22,30 @@ def getWatchedMovies():
     # returns the list of movies the user has already watched and crossed off
     return [ "The Matrix", "The Princess Bride", "Buffy the Vampire Slayer" ]
 
-# TODO 1
-# Create a new route called MovieRatings which handles a POST request on /ratings
 
-# TODO 2
-# Then create a confirmation template to be rendered at ratings.html
-# It should show a confirmation message like:
-#    "You gave Lord of the Rings a rating of ****"
+# Create a new route called RateMovie which handles a POST request on /rating-confirmation
+@app.route("/rating-confirmation", methods=['POST'])
+def RateMovie():
+    movie = request.form['movie']
+    rating = request.form['rating']
+    #movie = "The Matrix"
 
-# TODO 3
-# Add forms for rating movies, one on each list item in the ratings.html template
+    if movie not in getWatchedMovies():
+        # the user tried to cross off a movie that isn't in their list,
+        # so we redirect back to the front page and tell them what went wrong
+        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(movie)
+
+        # redirect to homepage, and include error as a query parameter in the URL
+        return redirect("/?error=" + error)
+
+    # if we didn't redirect by now, then all is well
+    return render_template('rating-confirmation.html', movie=movie, rating=rating)
+
+
+# Create a new route called MovieRatings which handles a GET on /ratings
+@app.route("/ratings", methods=['GET'])
+def MovieRatings():
+    return render_template('ratings.html', movies = getWatchedMovies())
 
 
 @app.route("/watched-it", methods=['POST'])
