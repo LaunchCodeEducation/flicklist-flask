@@ -20,18 +20,6 @@ class Movie(db.Model):
     def __repr__(self):
         return '<Movie %r>' % self.name
 
-# HOWTO initialize the movie table
-# >>> from main import db, Movie
-# /home/dm/miniconda3/envs/flicklist/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py:839: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
-#   'SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and '
-# >>> db.create_all()
-# >>> db.session.add(Movie('Mulan'))
-# >>> db.session.add(Movie('Rushmore'))
-# >>> db.session.add(Movie('Damsels in Distress'))
-# >>> db.session.commit()
-# >>> Movie.query.all()
-# [<Movie 'Mulan'>, <Movie 'Rushmore'>, <Movie 'Damsels in Distress'>]
-
 # a list of movies that nobody should have to watch
 terrible_movies = [
     "Gigli",
