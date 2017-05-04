@@ -12,7 +12,7 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
     watched = db.Column(db.Boolean)
-    # TODO 1 of 4: add a ratings column to the Movie table
+    rating = db.Column(db.String(5))
 
     def __init__(self, name):
         self.name = name
@@ -52,7 +52,8 @@ def RateMovie():
         return redirect("/?error=" + error)
 
     # if we didn't redirect by now, then all is well
-    # TODO 2 of 4: make a persistent change to the model
+    movie.rating = rating
+    db.session.commit()
     return render_template('rating-confirmation.html', movie=movie, rating=rating)
 
 

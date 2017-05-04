@@ -12,13 +12,11 @@
           My Rating:
           <select name="rating">
             {% for rating in ["How was it?", "*", "**", "***", "****", "*****"] %}
-              <option>{{ rating }}</option>
+              <option {% if rating==movie.rating %}selected{% endif %}>{{ rating }}</option>
             {% endfor %}
           </select>
         </label>
-        <!-- TODO 3 of 4: this line looks fishy. Make sure the select box's value is getting through to the server, so we get the right values stored -->
         <input type="hidden" name="rating" value="***"/>
-        <!-- TODO 4 of 4: If the user has rated a movie, make the select box default to that rating when they visit this page -->
         <input type="hidden" name="movie_id" value="{{ movie.id }}"/>
         <input type="submit" value="Rate it!"/> 
       </form>
