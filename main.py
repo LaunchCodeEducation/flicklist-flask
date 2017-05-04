@@ -20,7 +20,7 @@ class Movie(db.Model):
     def __repr__(self):
         return '<Movie %r>' % self.name
 
-# a list of movies that nobody should have to watch
+# a list of movie names that nobody should have to watch
 terrible_movies = [
     "Gigli",
     "Star Wars Episode 1: Attack of the Clones",
@@ -30,12 +30,9 @@ terrible_movies = [
 ]
 
 def getCurrentWatchlist():
-    # returns user's current watchlist -- a list of movies they want to see but haven't yet
     return Movie.query.filter_by(watched=False).all()
 
 def getWatchedMovies():
-    # For now, we are just pretending
-    # returns the list of movies the user has already watched and crossed off
     return Movie.query.filter_by(watched=True).all()
 
 # Create a new route called RateMovie which handles a POST request on /rating-confirmation
