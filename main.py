@@ -9,6 +9,11 @@ app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email: db.Column(db.String(120), nullable=False)
+    password: db.Column(db.String(120), nullable=False)
+
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
@@ -36,6 +41,8 @@ def getCurrentWatchlist():
 
 def getWatchedMovies():
     return Movie.query.filter_by(watched=True).all()
+
+@app.route("/register", methods=['POST'])
 
 # Create a new route called RateMovie which handles a POST request on /rating-confirmation
 @app.route("/rating-confirmation", methods=['POST'])
