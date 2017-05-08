@@ -11,8 +11,8 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email: db.Column(db.String(120), nullable=False)
-    password: db.Column(db.String(120), nullable=False)
+    name = db.Column(db.String(120))
+    password = db.Column(db.String(5))
 
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,7 +65,9 @@ def RateMovie():
     return render_template('rating-confirmation.html', movie=movie, rating=rating)
 
 
-# Create a new route called MovieRatings which handles a GET on /ratings
+@app.route("/login", methods=['GET'])
+
+
 @app.route("/ratings", methods=['GET'])
 def MovieRatings():
     return render_template('ratings.html', movies = getWatchedMovies())
