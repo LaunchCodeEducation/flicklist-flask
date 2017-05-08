@@ -55,6 +55,20 @@ def Login():
     else:
         return render_template('login.html')
 
+@app.route("/register", methods=['GET', 'POST'])
+def Register():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        # TODO: verify that there is no email there already
+        # TODO: verify that the email is valid format, eg includes an '@' and then one or more '.'s, doesn't include spaces or other nasty characters
+        # TODO: verify that form value of 'verify' matches password
+        user = User(email=email, password=password)
+        db.session.add(user)
+        db.session.commit()
+        return redirect("/")
+    else:
+        return render_template('register.html')
 
 # Create a new route called RateMovie which handles a POST request on /rating-confirmation
 @app.route("/rating-confirmation", methods=['POST'])
