@@ -11,8 +11,11 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
+    email = db.Column(db.String(120))
     password = db.Column(db.String(5))
+
+    def __repr__(self):
+        return '<User %r>' % self.email
 
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,7 +45,16 @@ def getCurrentWatchlist():
 def getWatchedMovies():
     return Movie.query.filter_by(watched=True).all()
 
-@app.route("/register", methods=['POST'])
+@app.route("/login", methods=['GET', 'POST'])
+def Login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(email=username).one()
+        return redirect("/")
+    else:
+        return render_template('login.html')
+
 
 # Create a new route called RateMovie which handles a POST request on /rating-confirmation
 @app.route("/rating-confirmation", methods=['POST'])
@@ -63,9 +75,6 @@ def RateMovie():
     movie.rating = rating
     db.session.commit()
     return render_template('rating-confirmation.html', movie=movie, rating=rating)
-
-
-@app.route("/login", methods=['GET'])
 
 
 @app.route("/ratings", methods=['GET'])
