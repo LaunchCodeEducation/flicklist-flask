@@ -9,6 +9,16 @@
         </style>
     </head>
     <body>
+        <div style='float: right'>
+          {% if user %}
+            {{ user }}
+            <form action="/logout" method="post" id='logout'>
+              <a href="javascript:{}" onclick="document.getElementById('logout').submit(); return false;">logout</a>
+            </form>
+          {% else %}
+            <a href="login">login</a> | <a href="register">register</a>
+          {% endif %}
+        </div>
         <h1>
             <a href="/">FlickList</a>
         </h1>

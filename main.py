@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 import cgi
 
@@ -51,6 +51,8 @@ def Login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(email=username).one()
+        # TODO: actually check password against db, lol
+        session['user'] = user.email
         return redirect("/")
     else:
         return render_template('login.html')
@@ -66,9 +68,15 @@ def Register():
         user = User(email=email, password=password)
         db.session.add(user)
         db.session.commit()
+        session['user'] = user.email
         return redirect("/")
     else:
         return render_template('register.html')
+
+@app.route("/logout", methods=['POST'])
+def Logout():
+    del session['user']
+    return redirect("/")
 
 # Create a new route called RateMovie which handles a POST request on /rating-confirmation
 @app.route("/rating-confirmation", methods=['POST'])
@@ -132,7 +140,15 @@ def addMovie():
 @app.route("/")
 def index():
     encoded_error = request.args.get("error")
-    return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
+    user = session.get('user', False)
+    return render_template('edit.html', user=user, watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
+
+
+# In a real application, this should be kept secret (i.e. not on github)
+# As a consequence of this secret being public, I think connection snoopers or
+# rival movie sites' javascript could hijack our session and act as us,
+# perhaps giving movies bad ratings - the HORROR.
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RU'
 
 if __name__ == "__main__":
     app.run()
