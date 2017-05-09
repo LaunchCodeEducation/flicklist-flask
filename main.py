@@ -143,11 +143,11 @@ def index():
     return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 
-routes_without_login = ['Login', 'Register']
+endpoints_without_login = ['Login', 'Register']
 
 @app.before_request
 def requireLogin():
-    if not (session.get('user', False) or request.endpoint in routes_without_login):
+    if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/register")
 
 
