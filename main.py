@@ -46,7 +46,7 @@ def getWatchedMovies():
     return Movie.query.filter_by(watched=True).all()
 
 @app.route("/login", methods=['GET', 'POST'])
-def Login():
+def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -58,7 +58,7 @@ def Login():
         return render_template('login.html')
 
 @app.route("/register", methods=['GET', 'POST'])
-def Register():
+def register():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -143,7 +143,7 @@ def index():
     return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 
-endpoints_without_login = ['Login', 'Register']
+endpoints_without_login = ['login', 'register']
 
 @app.before_request
 def requireLogin():
