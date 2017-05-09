@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session
+from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 import cgi
 
@@ -47,15 +47,19 @@ def getWatchedMovies():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(email=username).one()
-        # TODO: actually check password against db, lol
-        session['user'] = user.email
-        return redirect("/")
-    else:
-        return render_template('login.html')
+        if password == user.password:
+            session['user'] = user.email
+            flash('welcome back, '+user.email)
+            return redirect("/")
+        else:
+            flash('bad username or password')
+            return redirect("/login")
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
