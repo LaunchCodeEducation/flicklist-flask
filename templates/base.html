@@ -10,8 +10,8 @@
     </head>
     <body>
         <div style='float: right'>
-          {% if user %}
-            {{ user }}
+          {% if 'user' in session %}
+            {{ session['user'] }}
             <form action="/logout" method="post" id='logout'>
               <a href="javascript:{}" onclick="document.getElementById('logout').submit(); return false;">logout</a>
             </form>

@@ -140,8 +140,15 @@ def addMovie():
 @app.route("/")
 def index():
     encoded_error = request.args.get("error")
-    user = session.get('user', False)
-    return render_template('edit.html', user=user, watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
+    return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
+
+
+routes_without_login = ['Login', 'Register']
+
+@app.before_request
+def requireLogin():
+    if not (session.get('user', False) or request.endpoint in routes_without_login):
+        return redirect("/register")
 
 
 # In a real application, this should be kept secret (i.e. not on github)
