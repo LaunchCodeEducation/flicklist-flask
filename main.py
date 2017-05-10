@@ -51,7 +51,7 @@ def login():
         password = request.form['password']
         users = User.query.filter_by(email=username)
         if users.count() == 1:
-            user = users.first()
+            user = users.one()
             if password == user.password:
                 session['user'] = user.email
                 flash('welcome back, '+user.email)
@@ -124,7 +124,7 @@ def RateMovie():
 
 @app.route("/ratings", methods=['GET'])
 def MovieRatings():
-    current_user_id = User.query.filter_by(email=session['user']).first().id
+    current_user_id = User.query.filter_by(email=session['user']).one().id
     return render_template('ratings.html', movies = getWatchedMovies(current_user_id))
 
 
@@ -156,7 +156,7 @@ def addMovie():
         error = "Trust me, you don't want to add '{0}' to your Watchlist".format(new_movie_name)
         return redirect("/?error=" + error)
 
-    current_user_id = User.query.filter_by(email=session['user']).first().id
+    current_user_id = User.query.filter_by(email=session['user']).one().id
     movie = Movie(name=new_movie_name, owner=current_user_id, watched=False)
     db.session.add(movie)
     db.session.commit()
