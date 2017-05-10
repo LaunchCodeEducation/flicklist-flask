@@ -15,20 +15,17 @@ class User(db.Model):
     password = db.Column(db.String(120))
 
     def __repr__(self):
-        return '<User %r>' % self.email
+        return '<User email=%r password=%r id=%r>' % (self.email, self.password, self.id)
 
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
     watched = db.Column(db.Boolean)
     rating = db.Column(db.String(5))
-
-    def __init__(self, name):
-        self.name = name
-        self.watched = False
+    owner = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<Movie %r>' % self.name
+        return '<Movie: name=%r owner=%r watched=%r rating=%r id=%r>' % (self.name, self.owner, self.watched, self.rating, self.id)
 
 # a list of movie names that nobody should have to watch
 terrible_movies = [
@@ -42,8 +39,8 @@ terrible_movies = [
 def getCurrentWatchlist():
     return Movie.query.filter_by(watched=False).all()
 
-def getWatchedMovies():
-    return Movie.query.filter_by(watched=True).all()
+def getWatchedMovies(current_user_id):
+    return Movie.query.filter_by(watched=True, owner=current_user_id).all()
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -77,9 +74,6 @@ def register():
             return redirect('/register')
         if password != verify:
             flash('passwords did not match')
-            return redirect('/register')
-        if len(password) < 2:
-            flash('passwords must be at least 2 characters long')
             return redirect('/register')
         user = User(email=email, password=password)
         db.session.add(user)
@@ -130,7 +124,8 @@ def RateMovie():
 
 @app.route("/ratings", methods=['GET'])
 def MovieRatings():
-    return render_template('ratings.html', movies = getWatchedMovies())
+    current_user_id = User.query.filter_by(email=session['user']).first().id
+    return render_template('ratings.html', movies = getWatchedMovies(current_user_id))
 
 
 @app.route("/watched-it", methods=['POST'])
@@ -161,7 +156,8 @@ def addMovie():
         error = "Trust me, you don't want to add '{0}' to your Watchlist".format(new_movie_name)
         return redirect("/?error=" + error)
 
-    movie = Movie(new_movie_name)
+    current_user_id = User.query.filter_by(email=session['user']).first().id
+    movie = Movie(name=new_movie_name, owner=current_user_id, watched=False)
     db.session.add(movie)
     db.session.commit()
     return render_template('add-confirmation.html', movie=movie)
