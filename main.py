@@ -45,9 +45,9 @@ def getCurrentWatchlist():
 def getWatchedMovies():
     return Movie.query.filter_by(watched=True).all()
 
-# TODO: Add "/login" GET and POST routes.
-#       Create login template with username and password.
-#       Notice that we've created a 'login' link in the upper-right corner of the page that'll connect to it.
+# TODO 3: Add "/login" GET and POST routes.
+# TODO 4: Create login template with username and password.
+#         Notice that we've already created a 'login' link in the upper-right corner of the page that'll connect to it.
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -57,8 +57,8 @@ def register():
         if not isEmail(email):
             flash('zoiks! "' + email + '" does not seem like an email address')
             return redirect('/register')
-        # TODO: validate that there is no user with that email already
-        # TODO: validate that form value of 'verify' matches password
+        # TODO 1: validate that form value of 'verify' matches password
+        # TODO 2: validate that there is no user with that email already
         user = User(email=email, password=password)
         db.session.add(user)
         db.session.commit()
@@ -149,8 +149,8 @@ def index():
     encoded_error = request.args.get("error")
     return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
 
-# TODO: modify this function to rely on a list of endpoints that users can visit without being redirected. 
-# TODO: It should contain 'register' and 'login'.
+# TODO 5: modify this function to rely on a list of endpoints that users can visit without being redirected.
+#         It should contain 'register' and 'login'.
 @app.before_request
 def requireLogin():
     if not ('user' in session or request.endpoint == 'register'):
