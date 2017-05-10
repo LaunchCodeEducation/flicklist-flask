@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session
+from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 import cgi
 
@@ -45,26 +45,20 @@ def getCurrentWatchlist():
 def getWatchedMovies():
     return Movie.query.filter_by(watched=True).all()
 
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(email=username).one()
-        # TODO: actually check password against db, lol
-        session['user'] = user.email
-        return redirect("/")
-    else:
-        return render_template('login.html')
+# TODO: Add "/login" GET and POST routes.
+#       Create login template with username and password.
+#       Notice that we've created a 'login' link in the upper-right corner of the page that'll connect to it.
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        # TODO: verify that there is no email there already
-        # TODO: verify that the email is valid format, eg includes an '@' and then one or more '.'s, doesn't include spaces or other nasty characters
-        # TODO: verify that form value of 'verify' matches password
+        if not isEmail(email):
+            flash('zoiks! "' + email + '" does not seem like an email address')
+            return redirect('/register')
+        # TODO: validate that there is no user with that email already
+        # TODO: validate that form value of 'verify' matches password
         user = User(email=email, password=password)
         db.session.add(user)
         db.session.commit()
@@ -72,6 +66,19 @@ def register():
         return redirect("/")
     else:
         return render_template('register.html')
+
+def isEmail(string):
+    # for our purposes, an email string has an '@' followed by a '.'
+    # there is an embedded language called 'regular expression' that would crunch this implementation down
+    # to a one-liner, but we'll keep it simple:
+    atsign_index = string.find('@')
+    atsign_present = atsign_index >= 0
+    if not atsign_present:
+        return False
+    else:
+        domain_dot_index = string.find('.', atsign_index)
+        domain_dot_present = domain_dot_index >= 0
+        return domain_dot_present
 
 @app.route("/logout", methods=['POST'])
 def Logout():
@@ -142,14 +149,12 @@ def index():
     encoded_error = request.args.get("error")
     return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
 
-
-endpoints_without_login = ['login', 'register']
-
+# TODO: modify this function to rely on a list of endpoints that users can visit without being redirected. 
+# TODO: It should contain 'register' and 'login'.
 @app.before_request
 def requireLogin():
-    if not ('user' in session or request.endpoint in endpoints_without_login):
+    if not ('user' in session or request.endpoint == 'register'):
         return redirect("/register")
-
 
 # In a real application, this should be kept secret (i.e. not on github)
 # As a consequence of this secret being public, I think connection snoopers or
