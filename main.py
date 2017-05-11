@@ -22,10 +22,12 @@ class Movie(db.Model):
     name = db.Column(db.String(120))
     watched = db.Column(db.Boolean)
     rating = db.Column(db.String(5))
-    owner = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+
+    owner = db.relationship('User', backref=db.backref('movies', lazy='dynamic'))
 
     def __repr__(self):
-        return '<Movie: name=%r owner=%r watched=%r rating=%r id=%r>' % (self.name, self.owner, self.watched, self.rating, self.id)
+        return '<Movie: name=%r user_id=%r watched=%r rating=%r id=%r>' % (self.name, self.user_id, self.watched, self.rating, self.id)
 
 # a list of movie names that nobody should have to watch
 terrible_movies = [
@@ -40,7 +42,7 @@ def getCurrentWatchlist():
     return Movie.query.filter_by(watched=False).all()
 
 def getWatchedMovies(current_user_id):
-    return Movie.query.filter_by(watched=True, owner=current_user_id).all()
+    return Movie.query.filter_by(watched=True, user_id=current_user_id).all()
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -157,7 +159,7 @@ def addMovie():
         return redirect("/?error=" + error)
 
     current_user_id = User.query.filter_by(email=session['user']).one().id
-    movie = Movie(name=new_movie_name, owner=current_user_id, watched=False)
+    movie = Movie(name=new_movie_name, user_id=current_user_id, watched=False)
     db.session.add(movie)
     db.session.commit()
     return render_template('add-confirmation.html', movie=movie)
