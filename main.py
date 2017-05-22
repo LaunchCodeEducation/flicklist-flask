@@ -23,7 +23,8 @@ page_footer = """
 # Include another form so the user can check off a movie from their list when they've watched it.
 
 # TODO 2
-# Create a new route called watched-it to receive and handle the request from your 'watched-it' form.
+# Create a new route called watched-it to receive and handle the request from 
+# your 'watched-it' form using a method called crossOffMovie
 # Name the action '/watched-it' and name it's string parameter 'watched-movie'.
 # The user should see a message like:
 # "Star Wars has been crossed off your watchlist".
