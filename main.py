@@ -19,6 +19,18 @@ page_footer = """
 </html>
 """
 
+# a form for adding new movies
+add_form = """
+    <form action="/add" method="post">
+        <label>
+            I want to add
+            <input type="text" name="new-movie"/>
+            to my watchlist.
+        </label>
+        <input type="submit" value="Add It"/>
+    </form>
+"""
+
 # TODO 1
 # Include another form so the user can check off a movie from their list when they've watched it.
 
@@ -48,18 +60,6 @@ def addMovie():
 @app.route("/")
 def index():
     edit_header = "<h2>Edit My Watchlist</h2>"
-
-    # a form for adding new movies
-    add_form = """
-        <form action="/add" method="post">
-            <label>
-                I want to add
-                <input type="text" name="new-movie"/>
-                to my watchlist.
-            </label>
-            <input type="submit" value="Add It"/>
-        </form>
-    """
 
     # build the response string
     content = page_header + edit_header + add_form + page_footer
