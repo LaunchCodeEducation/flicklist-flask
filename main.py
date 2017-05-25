@@ -14,7 +14,7 @@ terrible_movies = [
     "Starship Troopers"
 ]
 
-def getCurrentWatchlist():
+def get_current_watchlist():
     # returns user's current watchlist--hard coded for now
     return [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
 
@@ -23,7 +23,7 @@ def getCurrentWatchlist():
 def crossoff_movie():
     crossed_off_movie = request.form['crossed-off-movie']
 
-    if crossed_off_movie not in getCurrentWatchlist():
+    if crossed_off_movie not in get_current_watchlist():
         # the user tried to cross off a movie that isn't in their list,
         # so we redirect back to the front page and tell them what went wrong
         error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(crossed_off_movie)
@@ -35,7 +35,7 @@ def crossoff_movie():
     return render_template('crossoff.html', crossed_off_movie=crossed_off_movie)
 
 @app.route("/add", methods=['POST'])
-def addMovie():
+def add_movie():
     # look inside the request to figure out what the user typed
     new_movie = request.form['new-movie']
 
@@ -61,7 +61,7 @@ def addMovie():
 # Put the list between "Flicklist" and "Edit My Watchlist" under this heading: <h2>My Watchlist</h2>
 
 # TODO:
-# Change getCurrentWatchlist to return []. This simulates a user with an empty watchlist.
+# Change get_current_watchlist to return []. This simulates a user with an empty watchlist.
 # Modify edit.html to make sense in such a situation:
 #  First: Hide the <h2>My Watchlist</h2> and it's unordered list.
 #  Second: Hide the crossoff form, since there are no movies to cross off. 
@@ -69,6 +69,6 @@ def addMovie():
 @app.route("/")
 def index():
     encoded_error = request.args.get("error")
-    return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
+    return render_template('edit.html', watchlist=get_current_watchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 app.run()
