@@ -15,7 +15,7 @@ def index():
     content += "<li>" + movie + "</li>"
     content += "</ul>"
 
-    # TODO: pick a different random movie, and display it under
+    # TODO: pick another random movie, and display it under
     # the heading "<h1>Tommorrow's Movie</h1>"
 
     return content
