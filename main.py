@@ -32,14 +32,14 @@ add_form = """
     </form>
 """
 
-def getCurrentWatchlist():
+def get_current_watchlist():
     # returns user's current watchlist--hard coded for now
     return [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
 
 # a form for crossing off watched movies
 # (first we build a dropdown from the current watchlist items)
 crossoff_options = ""
-for movie in getCurrentWatchlist():
+for movie in get_current_watchlist():
     crossoff_options += '<option value="{0}">{0}</option>'.format(movie)
 
 crossoff_form = """
@@ -69,7 +69,7 @@ terrible_movies = [
 def crossoff_movie():
     crossed_off_movie = request.form['crossed-off-movie']
 
-    if crossed_off_movie not in getCurrentWatchlist():
+    if crossed_off_movie not in get_current_watchlist():
         # the user tried to cross off a movie that isn't in their list,
         # so we redirect back to the front page and tell them what went wrong
         error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(crossed_off_movie)
@@ -86,7 +86,7 @@ def crossoff_movie():
 
 
 @app.route("/add", methods=['POST'])
-def addMovie():
+def add_movie():
     # look inside the request to figure out what the user typed
     new_movie = request.form['new-movie']
 
