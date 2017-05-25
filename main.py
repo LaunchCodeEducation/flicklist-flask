@@ -64,7 +64,7 @@ def addMovie():
 # Change getCurrentWatchlist to return []. This simulates a user with an empty watchlist.
 # Modify edit.html to make sense in such a situation:
 #  First: Hide the <h3>My Watchlist</h3> and it's unordered list.
-#  Second: Hide the crossoff form (crossoff.html), since there are no movies to cross off. 
+#  Second: Hide the crossoff form, since there are no movies to cross off. 
 
 @app.route("/")
 def index():
