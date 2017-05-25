@@ -60,7 +60,7 @@ def crossoff_movie():
 
 
 @app.route("/add", methods=['POST'])
-def addMovie():
+def add_movie():
     new_movie = request.form['new-movie']
 
     # build response content
