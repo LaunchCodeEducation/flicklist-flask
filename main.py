@@ -32,11 +32,11 @@ add_form = """
 """
 
 # a form for crossing off watched movies
-watched_form = """
-    <form action="/watched-it" method="post">
+crossoff_form = """
+    <form action="/crossoff" method="post">
         <label>
             I want to cross off
-            <select name="watched-movie"/>
+            <select name="crossed-off-movie"/>
                 <option value="Star Wars">Star Wars</option>
                 <option value="My Favorite Martian">My Favorite Martian</option>
                 <option value="The Avengers">The Avengers</option>
@@ -49,11 +49,11 @@ watched_form = """
 """
 
 
-@app.route("/watched-it", methods=['POST'])
-def watchMovie():
-    watched_movie = request.form['watched-movie']
-    watched_movie_element = "<strike>" + watched_movie + "</strike>"
-    confirmation = watched_movie_element + " has been crossed off your Watchlist."
+@app.route("/crossoff", methods=['POST'])
+def crossoff_movie():
+    crossed_off_movie = request.form['crossed-off-movie']
+    crossed_off_movie_element = "<strike>" + crossed_off_movie + "</strike>"
+    confirmation = crossed_off_movie_element + " has been crossed off your Watchlist."
     content = page_header + "<p>" + confirmation + "</p>" + page_footer
 
     return content
@@ -76,9 +76,10 @@ def index():
     edit_header = "<h2>Edit My Watchlist</h2>"
 
     # build the response string
-    content = page_header + edit_header + add_form + watched_form + page_footer
+    content = page_header + edit_header + add_form + crossoff_form + page_footer
 
     return content
 
 
 app.run()
+
