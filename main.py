@@ -50,7 +50,7 @@ def crossoff_movie():
     crossed_off_movie = request.form['crossed-off-movie']    
 
 # TODO:
-# modify your form to use a dropdown (<select>) instead of
+# modify the crossoff_form above to use a dropdown (<select>) instead of
 # an input text field (<input type="text"/>)
 
 @app.route("/add", methods=['POST'])
