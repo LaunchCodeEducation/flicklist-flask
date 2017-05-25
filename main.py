@@ -31,19 +31,27 @@ add_form = """
     </form>
 """
 
-# TODO 1
-# Include another form so the user can check off a movie from their list when they've watched it.
+# TODO:
+# Create the HTML for the form below so the user can check off a movie from their list 
+# when they've watched it.
+# Name the action for the form '/crossoff' and make its method 'post'.
 
-# TODO 2
-# Create a new route called watched-it to receive and handle the request from 
-# your 'watched-it' form using a method called crossOffMovie
-# Name the action '/watched-it' and name it's string parameter 'watched-movie'.
-# The user should see a message like:
+# a form for crossing off watched movies
+crossoff_form = """
+
+"""
+
+# TODO:
+# Finish filling in the function below so that the user will see a message like:
 # "Star Wars has been crossed off your watchlist".
+# And create a route above the function definition to receive and handle the request from 
+# your crossoff_form.
+def crossoff_movie():
+    crossed_off_movie = request.form['crossed-off-movie']    
 
-# TODO 3 (Extra Credit)
-# modify your form to use a dropdown (<select>) instead a
-# text box (<input type="text"/>)
+# TODO:
+# modify your form to use a dropdown (<select>) instead of
+# an input text field (<input type="text"/>)
 
 @app.route("/add", methods=['POST'])
 def addMovie():
