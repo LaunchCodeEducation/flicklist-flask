@@ -22,9 +22,9 @@ page_footer = """
 # a form for adding new movies
 add_form = """
     <form action="/add" method="post">
-        <label>
+        <label for="new-movie">
             I want to add
-            <input type="text" name="new-movie"/>
+            <input type="text" id="new-movie" name="new-movie"/>
             to my watchlist.
         </label>
         <input type="submit" value="Add It"/>
