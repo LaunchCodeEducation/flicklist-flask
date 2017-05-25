@@ -15,26 +15,24 @@ terrible_movies = [
 ]
 
 def getCurrentWatchlist():
-    # For now, we are just pretending
-    # returns user's current watchlist
+    # returns user's current watchlist--hard coded for now
     return [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
 
 
+@app.route("/crossoff", methods=['POST'])
+def crossoff_movie():
+    crossed_off_movie = request.form['crossed-off-movie']
 
-@app.route("/watched-it", methods=['POST'])
-def watchMovie():
-    watched_movie = request.form['watched-movie']
-
-    if watched_movie not in getCurrentWatchlist():
+    if crossed_off_movie not in getCurrentWatchlist():
         # the user tried to cross off a movie that isn't in their list,
         # so we redirect back to the front page and tell them what went wrong
-        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(watched_movie)
+        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(crossed_off_movie)
 
         # redirect to homepage, and include error as a query parameter in the URL
         return redirect("/?error=" + error)
 
     # if we didn't redirect by now, then all is well
-    return render_template('watched-it.html', watched_movie=watched_movie)
+    return render_template('crossoff.html', crossed_off_movie=crossed_off_movie)
 
 @app.route("/add", methods=['POST'])
 def addMovie():
@@ -54,19 +52,19 @@ def addMovie():
     # 'escape' the user's input so that if they typed HTML, it doesn't mess up our site
     new_movie_escaped = cgi.escape(new_movie, quote=True)
 
-    # TODO 1
+    # TODO:
     # Use a template to render the confirmation message
     return "Confirmation Message Under Construction..."
 
-# TODO 2
-# Modify edit.html to display the watchlist in an unordered list with bullets in front of each movie.
-# Put the list between "Flicklist" and "Edit My Watchlist" under a <h3>My Watchlist</h3>
+# TODO:
+# Modify the edit.html file to display the watchlist in an unordered list with bullets in front of each movie.
+# Put the list between "Flicklist" and "Edit My Watchlist" under <h3>My Watchlist</h3>
 
-# TODO 3
+# TODO:
 # Change getCurrentWatchlist to return []. This simulates a user with an empty watchlist.
 # Modify edit.html to make sense in such a situation:
-# 3a) Hide the <h3>My Watchlist</h3> and it's unordered list.
-# 3b) Hide the watched-it form, since there are no movies to watch. 
+#  First: Hide the <h3>My Watchlist</h3> and it's unordered list.
+#  Second: Hide the crossoff form (crossoff.html), since there are no movies to cross off. 
 
 @app.route("/")
 def index():
