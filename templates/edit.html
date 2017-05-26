@@ -6,9 +6,9 @@
   <ul>
     {% for movie in watchlist: %}
       <li>
-        <form action="/watched-it" method="post">
+        <form action="/crossoff" method="post">
           {{ movie }}
-          <input type="hidden" name="watched-movie" value="{{ movie }}"/>
+          <input type="hidden" name="crossed-off-movie" value="{{ movie }}"/>
           <input type="submit" value="I Watched it!"/>
         </form>
       </li>
