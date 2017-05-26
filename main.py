@@ -18,6 +18,25 @@ def get_current_watchlist():
     # returns user's current watchlist--hard coded for now
     return [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
 
+# TODO: 
+# Modify the "crossoff" form in edit.html so that a bulleted list with buttons next to
+# each movie/list item displayed that users can click to cross the movie off their list.
+# See the instructions in FlickList 5 Studio for more details.
+
+# TODO:
+# Make a ratings.html template which lists all movies that have been crossed off.
+# Add a form for rating each list item/movie
+
+# TODO: 
+# Add a function, movie_ratings, to handle a post request and render the template at "/ratings"
+
+# TODO:
+# Add a function, get_watched_movies, to get the list of crossed off movies. 
+# For now, create a hard-coded list with a few movie titles. 
+
+# TODO:
+# Make a rating-confirmation.html template, to be displayed when the user rates a movie 
+# they have crossed off. 
 
 @app.route("/crossoff", methods=['POST'])
 def crossoff_movie():
