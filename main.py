@@ -19,16 +19,22 @@ def get_current_watchlist():
     return [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
 
 # TODO: 
-# Modify the "crossoff" form in edit.html so that a bulleted list with buttons next to
-# each movie/list item displayed that users can click to cross the movie off their list.
-# See the instructions in FlickList 5 Studio for more details.
+# Modify "My Watchlist" so that you eliminate the need for the "crossoff" form in edit.html. 
+# Now, next to every list item/movie listed in "My Watchlist" you should display a button that says "I Watched it!". 
+# Clicking the button will result in a confirmation message that the movie has been watched. 
+# So you'll need to add a form within the <li> tags of "My Watchlist"
+# Once this is done, delete the "crossoff" form in edit.html
 
 # TODO:
 # Make a ratings.html template which lists all movies that have been crossed off.
-# Add a form for rating each list item/movie
+# It should have a header of <h2>Movies I Have Watched</h2>
+# Add a form for rating EACH list item/movie using a <select> dropdown with the options/values
+# in this list: ["How was it?", "*", "**", "***", "****", "*****"]
+# And with a button that says "Rate It!" to submit the user's rating.
+# Give this form the action of "/rating-confirmation" and the method of post.
 
 # TODO: 
-# Add a function, movie_ratings, to handle a post request and render the template at "/ratings"
+# Add a function, movie_ratings, to handle a get request and render the template at "/ratings"
 
 # TODO:
 # Add a function, get_watched_movies, to get the list of crossed off movies. 
@@ -37,6 +43,10 @@ def get_current_watchlist():
 # TODO:
 # Make a rating-confirmation.html template, to be displayed when the user rates a movie 
 # they have crossed off. 
+
+# TODO: 
+# create a rate_movie function that handles a post request on /rating-confirmation and 
+# renders the `rating-confirmation` template.
 
 @app.route("/crossoff", methods=['POST'])
 def crossoff_movie():
