@@ -49,9 +49,9 @@ def rate_movie():
     #movie = "The Matrix"
 
     if movie not in get_watched_movies():
-        # the user tried to cross off a movie that isn't in their list,
+        # the user tried to rate a movie that isn't in their list,
         # so we redirect back to the front page and tell them what went wrong
-        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(movie)
+        error = "'{0}' is not in your Watched Movies list, so you can't rate it!".format(movie)
 
         # redirect to homepage, and include error as a query parameter in the URL
         return redirect("/?error=" + error)
