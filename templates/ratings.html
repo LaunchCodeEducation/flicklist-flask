@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Movies I Have Watched:</h2></h2>
+<h2>Movies I Have Watched:</h2>
 
 <ul>
   {% for movie in movies %}
@@ -12,7 +12,7 @@
           My Rating:
           <select name="rating">
             <!-- TODO 3 of 3: If the user has rated a movie, make the select box default to that rating when they visit this page.
-                 Hint: check out the 'selected' html tag. How can you use jinja2's templates to only include a tag (or any text) 
+                 Hint: check out the 'select' html tag. How can you use jinja2's templates to include a tag (or text) only
                  if a server side condition is met?  -->
             {% for rating in ["How was it?", "*", "**", "***", "****", "*****"] %}
               <option>{{ rating }}</option>
