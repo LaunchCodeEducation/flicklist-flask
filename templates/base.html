@@ -12,8 +12,8 @@
         <div style='float: right'>
           {% if 'user' in session %}
             {{ session['user'] }}
-            <form action="/logout" method="post" id='logout'>
-              <a href="javascript:{}" onclick="document.getElementById('logout').submit(); return false;">logout</a>
+            <form action="/logout" method="post">
+              <input type="submit" value="Log Out" />
             </form>
           {% else %}
             <a href="login">login</a> | <a href="register">register</a>
