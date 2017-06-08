@@ -54,7 +54,7 @@ def register():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        if not isEmail(email):
+        if not is_email(email):
             flash('zoiks! "' + email + '" does not seem like an email address')
             return redirect('/register')
         # TODO 1: validate that form value of 'verify' matches password
@@ -67,7 +67,7 @@ def register():
     else:
         return render_template('register.html')
 
-def isEmail(string):
+def is_email(string):
     # for our purposes, an email string has an '@' followed by a '.'
     # there is an embedded language called 'regular expression' that would crunch this implementation down
     # to a one-liner, but we'll keep it simple:
@@ -81,7 +81,7 @@ def isEmail(string):
         return domain_dot_present
 
 @app.route("/logout", methods=['POST'])
-def Logout():
+def logout():
     del session['user']
     return redirect("/")
 
@@ -155,7 +155,7 @@ def index():
 # TODO 5: modify this function to rely on a list of endpoints that users can visit without being redirected.
 #         It should contain 'register' and 'login'.
 @app.before_request
-def requireLogin():
+def require_login():
     if not ('user' in session or request.endpoint == 'register'):
         return redirect("/register")
 
