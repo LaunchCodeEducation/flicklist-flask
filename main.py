@@ -13,7 +13,7 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
     watched = db.Column(db.Boolean)
-    rating = db.Column(db.String(5))
+    rating = db.Column(db.String(20))
 
     def __init__(self, name):
         self.name = name
@@ -31,54 +31,56 @@ terrible_movies = [
     "Starship Troopers"
 ]
 
-def getCurrentWatchlist():
+def get_current_watchlist():
     return Movie.query.filter_by(watched=False).all()
 
-def getWatchedMovies():
+def get_watched_movies():
     return Movie.query.filter_by(watched=True).all()
 
-# Create a new route called RateMovie which handles a POST request on /rating-confirmation
+# Create a new route called rate_movie which handles a POST request on /rating-confirmation
 @app.route("/rating-confirmation", methods=['POST'])
-def RateMovie():
+def rate_movie():
     movie_id = request.form['movie_id']
     rating = request.form['rating']
 
     movie = Movie.query.get(movie_id)
-    if not movie:
+    if movie not in get_watched_movies():
         # the user tried to rate a movie that isn't in their list,
         # so we redirect back to the front page and tell them what went wrong
-        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(movie)
+        error = "'{0}' is not in your Watched Movies list, so you can't rate it!".format(movie)
 
         # redirect to homepage, and include error as a query parameter in the URL
         return redirect("/?error=" + error)
 
     # if we didn't redirect by now, then all is well
     movie.rating = rating
+    db.session.add(movie)
     db.session.commit()
     return render_template('rating-confirmation.html', movie=movie, rating=rating)
 
 
-# Create a new route called MovieRatings which handles a GET on /ratings
+# Creates a new route called movie_ratings which handles a GET on /ratings
 @app.route("/ratings", methods=['GET'])
-def MovieRatings():
-    return render_template('ratings.html', movies = getWatchedMovies())
+def movie_ratings():
+    return render_template('ratings.html', movies = get_watched_movies())
 
 
-@app.route("/watched-it", methods=['POST'])
-def watchMovie():
-    watched_movie_id = request.form['watched-movie']
+@app.route("/crossoff", methods=['POST'])
+def crossoff_movie():
+    crossed_off_movie_id = request.form['crossed-off-movie']
 
-    watched_movie = Movie.query.get(watched_movie_id)
-    if not watched_movie:
+    crossed_off_movie = Movie.query.get(crossed_off_movie_id)
+    if not crossed_off_movie:
         return redirect("/?error=Attempt to watch a movie unknown to this database")
 
     # if we didn't redirect by now, then all is well
-    watched_movie.watched = True
+    crossed_off_movie.watched = True
+    db.session.add(crossed_off_movie)
     db.session.commit()
-    return render_template('watched-it.html', watched_movie=watched_movie)
+    return render_template('crossoff.html', crossed_off_movie=crossed_off_movie)
 
 @app.route("/add", methods=['POST'])
-def addMovie():
+def add_movie():
     # look inside the request to figure out what the user typed
     new_movie_name = request.form['new-movie']
 
@@ -100,7 +102,7 @@ def addMovie():
 @app.route("/")
 def index():
     encoded_error = request.args.get("error")
-    return render_template('edit.html', watchlist=getCurrentWatchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
+    return render_template('edit.html', watchlist=get_current_watchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 if __name__ == "__main__":
     app.run()
