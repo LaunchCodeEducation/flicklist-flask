@@ -36,7 +36,9 @@ def get_current_watchlist():
     return Movie.query.filter_by(watched=False).all()
 
 def get_watched_movies():
-    return Movie.query.filter_by(watched=True).all()
+    # For now, we are just pretending
+    # returns the list of movies the user has already watched and crossed off
+    return [ "The Matrix", "The Princess Bride", "Buffy the Vampire Slayer" ]
 
 # Create a new route called rate_movie which handles a POST request on /rating-confirmation
 @app.route("/rating-confirmation", methods=['POST'])
