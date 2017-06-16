@@ -1,10 +1,16 @@
 from app import db
+from hashutils import make_pw_hash
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True)
-    password = db.Column(db.String(120))
+    pw_hash = db.Column(db.String(120))
     movies = db.relationship('Movie', backref='owner')
+
+    def __init__(self, email, password):
+        self.email = email
+        self.pw_hash = make_pw_hash(password)
+
     def __repr__(self):
         return '<User %r>' % self.email
 
