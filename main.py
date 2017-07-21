@@ -53,7 +53,8 @@ def add_movie():
     new_movie_escaped = cgi.escape(new_movie, quote=True)
 
     # TODO:
-    # Use a template to render the confirmation message
+    # Create a template called add-confirmation.html inside your /templates directory
+    # Use that template to render the confirmation message instead of this temporary message below
     return "Confirmation Message Under Construction..."
 
 # TODO:
@@ -65,6 +66,7 @@ def add_movie():
 # Modify edit.html to make sense in such a situation:
 #  First: Hide the <h2>My Watchlist</h2> and it's unordered list.
 #  Second: Hide the crossoff form, since there are no movies to cross off. 
+# Then you can change get_current_watchlist back to the list of hard-coded movies.
 
 @app.route("/")
 def index():
