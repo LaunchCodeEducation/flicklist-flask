@@ -4,11 +4,17 @@
 
 {% if watchlist|length > 0 %}
   <h2>My Watchlist</h2>
-  <ul>
+  
+  
     {% for movie in watchlist: %}
-    <li>{{ movie }}</li>
+    <form action="/crossoff" method ="post">
+    <ul>
+    <li> <input type="hidden" name="crossed-off-movie" value="{{ movie }}"> {{ movie }} <input type="submit" value="I watched it"></li>
+    </ul>
+    </form>
     {% endfor %}
-  </ul>
+
+
 {% endif %}
 
 <h2>Edit My Watchlist</h2>
