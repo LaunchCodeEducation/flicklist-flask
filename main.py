@@ -88,6 +88,7 @@ def crossoff_movie():
 @app.route("/add", methods=['POST'])
 def add_movie():
     new_movie = cgi.escape(request.form['new-movie'])
+    isTerribleMovie = False
 
     # TODO 
     # 'escape' the user's input so that if they typed HTML, it doesn't mess up our site
@@ -98,14 +99,21 @@ def add_movie():
 
     # TODO 
     # if the user wants to add a terrible movie, redirect and tell them not to add it b/c it sucks
+    for i in terrible_movies:
+        if i == new_movie:
+            isTerribleMovie = True
+
 
     # build response content
-    if new_movie:
-        new_movie_element = "<strong>" + new_movie + "</strong>"
-        sentence = new_movie_element + " has been added to your Watchlist!"
-        content = page_header + "<p>" + sentence + "</p>" + page_footer
+    if isTerribleMovie:
+        content = "You tried to add a terrible movie. Try again!"
     else:
-        content = "Error: Input for New Movie was Empty!"
+        if new_movie:
+            new_movie_element = "<strong>" + new_movie + "</strong>"
+            sentence = new_movie_element + " has been added to your Watchlist!"
+            content = page_header + "<p>" + sentence + "</p>" + page_footer
+        else:
+            content = "Error: Input for New Movie was Empty!"
 
     return content
 
